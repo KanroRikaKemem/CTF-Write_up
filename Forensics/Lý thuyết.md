@@ -25,6 +25,8 @@
 [Link write - up](https://hackmd.io/@bMGaKJbHSWqauGaKAUyYhA/B1FRjpblZe)
 
 ### II. Document Analysis and SteganographyFile Forensics (File Formats):
+[Link Write - up](https://hackmd.io/@bMGaKJbHSWqauGaKAUyYhA/BJOv97VX-g)
+
 ### III. Network Forensics:
 #### 1. Tổng quan:
 Công việc chính của nhóm nay là thu thập và phân tích các gói tin được truyền quan các thiết bị đầu cuối, từ đó phát hiện, cảnh báo các dấu hiệu bất thường trong hệ thống mạng.
