@@ -1,4 +1,3 @@
-
 ## A. Tổng quan Forensics:
 > *Link tham khảo: [GitHub](https://github.com/vonderchild/digital-forensics-lab)*
 
@@ -26,6 +25,9 @@
 
 ### II. Document Analysis and SteganographyFile Forensics (File Formats):
 [Link Write - up](https://hackmd.io/@bMGaKJbHSWqauGaKAUyYhA/BJOv97VX-g)
+
+### III. Web Attack Forensics:
+[Link Write - up](https://hackmd.io/@bMGaKJbHSWqauGaKAUyYhA/rktTQB5Vbe)
 
 ### III. Network Forensics:
 #### 1. Tổng quan:
@@ -418,6 +420,7 @@ kanrorikakemem@DESKTOP-ICMNRNE:/mnt/c/Users/Ha Nguyen/Documents/Ngon_ngu_lap_tri
     - `TIME`: Tổng thời gian CPU đã dùng.
     - `COMMAND`: Câu lệnh/Đường dẫn thực thi (Với tham số).
 - Ví dụ:
+::: spoiler
 ``` ubuntu
 kanrorikakemem@DESKTOP-ICMNRNE:~$ ps aux
 USER         PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
@@ -459,6 +462,7 @@ root        5263  0.0  0.0  23156  3696 ?        S    21:12   0:00 /lib/systemd/
 kanrori+    5264  0.6  0.0   6332  5120 pts/0    Ss   21:12   0:00 -bash
 kanrori+    5277  0.0  0.0   7484  3072 pts/0    R+   21:13   0:00 ps aux
 ```
+:::
 - Mẹo và lưu ý:
     - `ps` cho snapshot tại thời điểm chạy, không cập nhật liên tục. Dùng `top` hoặc `htop` để theo dõi real time.
     - Trên hệ thống có nhiều thread, `ps -elf` sẽ cho thấy LWP (light-weight process/thread id).
