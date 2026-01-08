@@ -6,6 +6,7 @@
 
 #### 2. Cách hoạt động:
 - Gồm ba mật mã khối AES - 128, AES - 192, AES - 256 tương ứng với độ dài của key là 128 bit, 192 bit và 256 bit. Số vòng của key khác nhau, cụ thể 10 vòng cho 128 bit, 12 vòng cho 192 bit và 14 vòng cho 256 bit. Mỗi vòng đều thực hiện ba bước thay thế, biến đổi và hoà trộn khối plaintext đầu vào để biến nó thành ciphertext. Nói đơn giản hơn là plaintext được chia ra thành các khối để đưa vào mã hoá từng khối, với độ dài cố định là 128 bit. Nếu độ dài plaintext nhiều hơn rất nhiều so với 128 bit thì ta sẽ chia nó thành các phần 128 bit.
+
 ![image](https://hackmd.io/_uploads/BkAEYoGwkx.png)
 - Thông tin được chính phủ phân loại theo ba cấp độ: bảo mật, bí mật, tối mật. Tất cả các độ dài của key từ 128, 192, 256 bit đều được dùng ở cấp độ bảo mật, bí mật. Riêng với những thông tin tối mật để đảm bảo không xảy ra bất cứ sai sót nào phải cần đến key 192 hoặc 256 bit. Mật mã sẽ dùng một key riêng tư để mã hoá và giải mã dữ liệu và tất nhiên cả người gửi và người nhận đều phải nhận biết và sử dụng được key này.
 
@@ -54,6 +55,7 @@ Cả AES và DES đều là mật mã khối đối xứng nhưng AES hiệu qu�
 - **Nhược điểm:** 
     - **Không có sự ngẫu nhiên:** Nếu một block plaintext lặp lại, ciphertext cũng sẽ lặp lại.
     - **Không bảo mật trước các mẫu dữ liệu:** Nếu dữ liệu có nhiều phần giống nhau, ta có thể nhận diện được cấu trúc dữ liệu từ ciphertext.
+
 ![image](https://hackmd.io/_uploads/S1XFG2Mw1e.png)
 ![image](https://hackmd.io/_uploads/SkYKznGwke.png)
 
@@ -65,12 +67,14 @@ Cả AES và DES đều là mật mã khối đối xứng nhưng AES hiệu qu�
     - $C_2 = AES(P_2 \oplus C_1)$
     - ...
     - $P_i = AES_{Decrypt}(C_i) \oplus C_{i - 1}$
+
 ![image](https://hackmd.io/_uploads/H1h573GP1l.png)
 ![image](https://hackmd.io/_uploads/S1Zjm2MP1g.png)
 - CBC được dùng rất phổ biến trong mã hoá, nó có một hạn chế là phải mã hoá tuần tự và phải padding block cuối cùng.
 
 ##### c) Counter (CTR):
 - Trong counter mode, ta sẽ mã hoá (nonce $||$ count) trước ($||$ là phép nối), sau đó sẽ cộng (XOR) với plaintext để ra ciphertext.
+
 ![image](https://hackmd.io/_uploads/HJhmrhfDJg.png)
 ![image](https://hackmd.io/_uploads/ry74H3MDkg.png)
 - Nonce chính là một initialization vector (IV) như CBC nhưng chỉ được sử dụng một lần duy nhất, còn counter là một số tăng liên tiếp. Ví dụ trong AES thì đầu vào là 128 bit, ta thích một counter bằng 32 bit thì IV sẽ là 128 - 32 = 96 bit.
@@ -254,6 +258,7 @@ except Exception as e:
 ##### Quá trình exploit:
 - **Xác định kích thước khối:**
 Dựa vào độ dài khoá là $16$ byte từ mã nguồn, ta có thể biết kích thước khối mã hoá là $16$ byte hoặc có thể thử như sau:
+
 ![image](https://hackmd.io/_uploads/Hkny_Wh3kg.png)
     - Gửi lần lượt các chuỗi có độ dài từ $1$ đến $15$ byte, nhận thấy dữ liệu trả về có độ dài $32$ byte.
     - Gửi một chuỗi có độ dài $16$ byte, lúc này dữ liệu trả về có độ dài là $48$ byte.
@@ -319,6 +324,7 @@ Tấn công AES ECB Oracle cho thấy rõ ràng những nhược điểm của c
 #### 1. Một ví dụ chung về tấn công 2D - MITM:
 - Trong tấn công MITM với 2DES, phương pháp này nhằm đạt được hai trạng thái trung gian trong quá trình mã hoá nhiều lần của plaintext.
 - Minh hoạ của tấn công 2D - MITM:
+
 ![image](https://hackmd.io/_uploads/r138d7xaJe.png)
 - Thuật toán 2D - MITM:
     - Tính: $$SubCipher_1 = ENC_{f_1}(k_{f_1}, P) \forall k_{f_1} \in K$$ và lưu từng giá trị $SubCipher_1$ cùng với khoá tương ứng $k_{f_1}$ vào tập hợp $A$.
@@ -337,6 +343,7 @@ Trong mật mã đối xứng, tấn công Padding Oracle có thể được áp
 
 #### 1. Tấn công Padding Oracle với CBC:
 - Triển khai tiêu chuẩn của quá trình giải mã CBC trong các mã khối là giải mã tất cả các khối bản mã, xác thực phần padding, loại bõ phần padding theo tiêu chuẩn PKCS7 và trả về plaintext của thông điệp. Nếu máy chủ trả về **"invalid padding"** thay vì lỗi chung chung **"decryption failed"**, kẻ tấn công có thể sử dụng máy chủ như một oracle để giải mã hoặc mã hoá thông điệp.
+
 ![image](https://hackmd.io/_uploads/SkmPb4gaJl.png)
 - Công thức toán học của quá trình giải mã CBC: $$P_i = D_K(C_i) \oplus C_{i - 1}, i \in {1, N}$$ $$P_0 = IV \oplus D_K(C_0)$$
 - Cách thực hiện tấn công: Giả sử kẻ tấn công có hai khối ciphertext $C_1$, $C_2$ và muốn giải mã khối thứ hai để thu được $P_2$:
