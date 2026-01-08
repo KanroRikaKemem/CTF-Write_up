@@ -2,6 +2,7 @@
 ### I. Khái niệm:
 #### 1. Bài toán: 
 - Đối với các hệ thống giao tiếp giữa hai endpoint thông qua một server trung gian (hệ thống HelpDesk, chat client - server,...)
+
 ![image](https://hackmd.io/_uploads/ryVP9W7zgx.png)
 - Có thể áp dụng cơ chế như SSL\TLS để xác thực hai chiều, mã hoá kênh truyền nhưng phương pháp này chỉ đảm bảo an toàn giao tiếp giữa client - server và vẫn tiềm toàn nguy cơ bị tấn công khi kẻ gian kiểm soát được đường truyền mạng giữa hai bên hay kiểm soát được chính server.
 $\rightarrow$ Yêu cầu đặt ra phương pháp trao đổi hoá mã hoá chung giữa hai đầu endpoint (client) và đảm bảo rằng key mã hoá chung chỉ có hai client biết với nhau (hoàn toàn bí mật đối với server hoặc kẻ gian nằm giữa kênh truyền).
@@ -17,6 +18,7 @@ $\rightarrow$ Yêu cầu đặt ra phương pháp trao đổi hoá mã hoá chun
     - Mỗi người chuyển hỗn hợp của mình tới người kia thông qua một kênh vận chuyển công cộng.
     - Khi nhận được hỗn hợp của người kia, mỗi người sẽ trộn thêm với màu bí mật của riêng mình và nhận được hỗn hợp cuối cùng.
 - Hỗn hợp sơn cuối cùng giống nhau và chỉ có hai người biết, người ngoài sẽ rất khó (về mặt tính toán) để tìm ra bí mật chung (hỗn hợp cuối).
+
 ![image](https://hackmd.io/_uploads/H1kX1M7Mlx.png)
 
 #### 2. Dạng toán học:
@@ -111,51 +113,15 @@ print("Message: ", M)
             - Tìm $a_i$ sao cho $g_i^{a_i} \equiv A_i \mod p$$
             - Từ đó tìm được $a \mod q_i^{e_i}$
         - Sử dụng Chinese Remainder Theorem (CRT) để tái hợp các phần: $$a \equiv a_i \mod q_i^{e_i} \rightarrow a \mod n$$
-            - Sau khi đã biết $$
-\begin{aligned}
-a &\equiv a_1 \mod q_1^{e_1} \\
-a &\equiv a_2 \mod q_2^{e_2} \\
-&\vdots \\
-a &\equiv a_k \mod q_k^{e_k}
-\end{aligned}
-$$ Sử dụng CRT sẽ thu được nghiệm duy nhất modulo $n = p - 1$: $$a \mod n$$
+            - Sau khi đã biết:
+     
+              <img width="702" height="246" alt="image" src="https://github.com/user-attachments/assets/cd6302fe-acd2-4443-8298-d9f10ce49ec3" />
             - Nếu: $$a \equiv a_i \mod m_i$$ Với $gcd(m_i, m_j) = 1$ cho mọi $i \neq j$.
             - Nghiệm tổng quát: $$a = \displaystyle \sum_{i = 1}^{k} a_i.M_i.y_i \mod n$$ Trong đó:
                 - $M_i = \frac{n}{m_i}$
                 - $y_i = M_i^{-1} \mod m_i$
 > Ví dụ:
-> - Giải phương trình: $$g^x \equiv h \mod p$$ Với:
-> $g = 2$
-> $h = 22$
-> $p = 29$
-> $n = p - 1 = 28 = 2^2.7$
-> - Tìm $x_1 \equiv x \mod 2^2$:
-> $\left\{
-\begin{aligned}
-> g_1 = g^{\frac{n}{2^2}} = 2^7 \mod 29 = 12 \\
-> h_1 = h^{\frac{n}{2^2}} = 22^7 \mod 29 = 28
-> \end{aligned}
-> \right.
-> \\
-> \Rightarrow g_1^x \equiv h_1 \mod 29 \leftrightarrow 12^x \equiv 28 \mod 29 \rightarrow x = 2 \rightarrow x_1 = 2 \mod 2^2$
-> - Tìm $x_2 \equiv x \mod 7$:
-> $\left\{
-\begin{aligned}
-> g_2 = g^{\frac{n}{7}} = 2^4 \mod 29 = 16 \\
-> h_2 = h^{\frac{n}{7}} = 22^4 \mod 29 = 23
-> \end{aligned}
-> \right.
-> \\
-> \Rightarrow g_2^x \equiv h_2 \mod 29 \leftrightarrow 16^x \equiv 23 \mod 29 \rightarrow x = 5 \rightarrow x_2 = 5 \mod 7$
-> - Áp dụng CRT: 
-> $\left\{
-\begin{aligned}
-> x = 2 \mod 4 \\
-> x = 5 \mod 7
-> \end{aligned}
-> \right.
-> \\
-> \Rightarrow x = 26$
+> <img width="1040" height="546" alt="image" src="https://github.com/user-attachments/assets/52b21928-d020-45a1-93e5-67c35da17b14" />
 
 ##### b) Ví dụ:
 - Đề bài:
@@ -240,18 +206,10 @@ print(a)
     - Gửi $g_i$ làm khoá công khai giả mạo với victim:
         - Victim tính shared secret: $$s_i = g_i^a$$ $\rightarrow s_i \in$ nhóm con bậc $q_i$.
         - Vì $s_i$ chỉ có $q_i$ giá trị nên ta thử từng $s_i$ $\rightarrow$ Tìm được $a \mod q_i$.
-    - Gửi nhiều giá trị thuộc nhóm con bậc nhỏ khác nhau $q_i$, sau đó dùng CRT: $$
-\left\{
-\begin{aligned}
-a &\equiv a_1 \mod q_1 \\
-a &\equiv a_2 \mod q_2 \\
-&\vdots \\
-a &\equiv a_k \mod q_k
-\end{aligned}
-\right.
-\quad \Rightarrow \quad
-a \mod q_1 q_2 \cdots q_k
-$$ Nếu $q_1q_2...q_k > a$, attacker hoàn toàn khôi phục được $a$.
+    - Gửi nhiều giá trị thuộc nhóm con bậc nhỏ khác nhau $q_i$, sau đó dùng CRT:
+      
+      <img width="655" height="148" alt="image" src="https://github.com/user-attachments/assets/fd01f4fc-4884-4439-abad-4ed8e8e7017e" />
+    - Nếu $q_1q_2...q_k > a$, attacker hoàn toàn khôi phục được $a$.
 > Ví dụ 1:
 > - Với $p = 211$, $g = 71$ (có bậc là $105$), $g^3 \mod p = 61$ (có bậc là $5$, nghĩa là nhóm con nhỏ bậc $5$).
 > - Attacker gửi giá trị: $$g' = 61 \equiv g^3 \mod 211$$
@@ -405,13 +363,11 @@ for g in range (2, p):
     - Số nguyên tố lớn $p$ (dài $1024$ bit, dạng chuẩn NIST).
     - Phần tử sinh $g = 2$
     - Số bí mật $a$ (rất lớn).
-::: spoiler Thông số
 ```py
 g = 2
 p = 2410312426921032588552076022197566074856950548502459942654116941958108831682612228890093858261341614673227141477904012196503648957050582631942730706805009223062734745341073406696246014589361659774041027169249453200378729434170325843778659198143763193776859869524088940195577346119843545301547043747207749969763750084308926339295559968882457872412993810129130294592999947926365264059284647209730384947211681434464714438488520940127459844288859336526896320919633919
 a = 972107443837033796245864316200458246846904598488981605856765890478853088246897345487328491037710219222038930943365848626194109830309179393018216763327572120124760140018038673999837643377590434413866611132403979547150659053897355593394492586978400044375465657296027592948349589216415363722668361328689588996541370097559090335137676411595949335857341797148926151694299575970292809805314431447043469447485957669949989090202320234337890323293401862304986599884732815
 ```
-:::
 - Tính: $$g^a \mod p$$
 
 ##### b) Phân tích đề bài:
@@ -433,25 +389,23 @@ print(pow(g, a, p))
 ##### a) Mô tả đề bài:
 - Bạn và Alice đang thực hiện trao đổi khoá Diffie - Hellman để tạo ra một khoá chung bí mật mà người ngoài không thể tính được.
 - Các thông số được cung cấp:
-::: spoiler Thông số công khai (NIST parameters)
+    - Thông số công khai (NIST parameters)
 ```py
 g = 2
 p = 2410312426921032588552076022197566074856950548502459942654116941958108831682612228890093858261341614673227141477904012196503648957050582631942730706805009223062734745341073406696246014589361659774041027169249453200378729434170325843778659198143763193776859869524088940195577346119843545301547043747207749969763750084308926339295559968882457872412993810129130294592999947926365264059284647209730384947211681434464714438488520940127459844288859336526896320919633919
 ```
-:::
-::: spoiler Thông số nhận được từ Alice
+
+Thông số nhận được từ Alice
 $$A = g^a \mod p$$
 ```py
 A = 70249943217595468278554541264975482909289174351516133994495821400710625291840101960595720462672604202133493023241393916394629829526272643847352371534839862030410331485087487331809285533195024369287293217083414424096866925845838641840923193480821332056735592483730921055532222505605661664236182285229504265881752580410194731633895345823963910901731715743835775619780738974844840425579683385344491015955892106904647602049559477279345982530488299847663103078045601
 ```
-:::
-::: spoiler Thông tin bạn tự tạo
+Thông tin bạn tự tạo
 $$B = g^b \mod p$$
 ```py
 b = 12019233252903990344598522535774963020395770409445296724034378433497976840167805970589960962221948290951873387728102115996831454482299243226839490999713763440412177965861508773420532266484619126710566414914227560103715336696193210379850575047730388378348266180934946139100479831339835896583443691529372703954589071507717917136906770122077739814262298488662138085608736103418601750861698417340264213867753834679359191427098195887112064503104510489610448294420720
 B = 518386956790041579928056815914221837599234551655144585133414727838977145777213383018096662516814302583841858901021822273505120728451788412967971809038854090670743265187138208169355155411883063541881209288967735684152473260687799664130956969450297407027926009182761627800181901721840557870828019840218548188487260441829333603432714023447029942863076979487889569452186257333512355724725941390498966546682790608125613166744820307691068563387354936732643569654017172
 ```
-:::
 - Sử dụng $b$ và $A$ để tính: $$shared_-secret = A^b \mod p$$
 
 ##### b) Phân tích đề bài:
@@ -476,42 +430,35 @@ print(res)
 ##### a) Mô tả đề bài:
 Mô tả quá trình trao đổi khoá Diffie - Hellman để tạo ra một khoá bí mật dùng cho AES encryption:
 - Thông tin được cung cấp sử dụng chuẩn NIST:
-::: spoiler Thông số
 ```py
 g = 2
 p = 2410312426921032588552076022197566074856950548502459942654116941958108831682612228890093858261341614673227141477904012196503648957050582631942730706805009223062734745341073406696246014589361659774041027169249453200378729434170325843778659198143763193776859869524088940195577346119843545301547043747207749969763750084308926339295559968882457872412993810129130294592999947926365264059284647209730384947211681434464714438488520940127459844288859336526896320919633919
 ```
-:::
 - Trao đổi khoá Diffie - Hellman:
-::: spoiler Alice chọn số bí mật a và gửi giá trị công khai
+    - Alice chọn số bí mật a và gửi giá trị công khai
 $$A = g^a \mod p$$
 ```py
 A = 112218739139542908880564359534373424013016249772931962692237907571990334483528877513809272625610512061159061737608547288558662879685086684299624481742865016924065000555267977830144740364467977206555914781236397216033805882207640219686011643468275165718132888489024688846101943642459655423609111976363316080620471928236879737944217503462265615774774318986375878440978819238346077908864116156831874695817477772477121232820827728424890845769152726027520772901423784
 ```
-:::
-::: spoiler Bạn chọn số bí mật b và gửi lại
+Bạn chọn số bí mật b và gửi lại
 $$B = g^b \mod p$$
 ```py
 b = 197395083814907028991785772714920885908249341925650951555219049411298436217190605190824934787336279228785809783531814507661385111220639329358048196339626065676869119737979175531770768861808581110311903548567424039264485661330995221907803300824165469977099494284722831845653985392791480264712091293580274947132480402319812110462641143884577706335859190668240694680261160210609506891842793868297672619625924001403035676872189455767944077542198064499486164431451944
 B = 1241972460522075344783337556660700537760331108332735677863862813666578639518899293226399921252049655031563612905395145236854443334774555982204857895716383215705498970395379526698761468932147200650513626028263449605755661189525521343142979265044068409405667549241125597387173006460145379759986272191990675988873894208956851773331039747840312455221354589910726982819203421992729738296452820365553759182547255998984882158393688119629609067647494762616719047466973581
 ```
-:::
 - Cả hai tính khoá chung:
 Alice tính: $$s = B^a \mod p$$ Bạn tính: $$s = A^b \mod p$$ Vì $(g^a)^b = (g^a)^b \mod p$
 - Mã hoá AES:
     - Từ khoá bí mật $s$, cả hai tạo một AES Key (thường bằng cách băm $s$ với SHA - 256).
     - Alice mã hoá flag bằng AES và gửi `iv` và `encrypted_flag` (flag đã mã hoá bằng AES - CBC)
-::: spoiler Thông số
 ```py
 {'iv': '737561146ff8194f45290f5766ed6aba', 'encrypted_flag': '39c99bf2f0c14678d6a5416faef954b5893c316fc3c48622ba1fd6a9fe85f3dc72a29c394cf4bc8aff6a7b21cae8e12c'}
 ```
-:::
 - Nhiệm vụ:
     - Tính **shared_secret** $s = A^b \mod p$
     - Băm $s$ để tạo AES Key
     - Dùng AES (chế độ CBC, với `iv` đã cho) để giải mã `encrypted_flag`
 - Hai source được cho:
-::: spoiler source.py
 ```py
 from Crypto.Cipher import AES
 from Crypto.Util.Padding import pad, unpad
@@ -540,8 +487,6 @@ def encrypt_flag(shared_secret: int):
 
 print(encrypt_flag(shared_secret))
 ```
-:::
-::: spoiler decrypt.py
 ```py
 from Crypto.Cipher import AES
 from Crypto.Util.Padding import pad, unpad
@@ -576,7 +521,6 @@ ciphertext = ?
 
 print(decrypt_flag(shared_secret, iv, ciphertext))
 ```
-:::
 ##### b) Phân tích cách làm:
 Từ source code `decrypt.py` đã cho, thêm một vài thông số như sau vào:
 ```py
@@ -1145,7 +1089,6 @@ print(decrypt_flag(s, iv, encrypted))
 #### 1. Script Kiddie:
 ##### a) Mô tả đề bài:
 "*Found this cool script on Github and I've been using it to keep my secrets from anyone listening in on the school wifi!*"
-::: spoiler script.py
 ```pyfrom Crypto.Cipher import AES
 import hashlib
 import secrets
@@ -1240,8 +1183,6 @@ def main():
 if __name__ == '__main__':
     main()
 ```
-:::
-::: spoiler output.txt
 ```py
 p: 2410312426921032588552076022197566074856950548502459942654116941958108831682612228890093858261341614673227141477904012196503648957050582631942730706805009223062734745341073406696246014589361659774041027169249453200378729434170325843778659198143763193776859869524088940195577346119843545301547043747207749969763750084308926339295559968882457872412993810129130294592999947926365264059284647209730384947211681434464714438488520940127459844288859336526896320919633919
 g: 2
@@ -1250,7 +1191,6 @@ B: 65288867680946625640690465388631302328860907526274871813504535578602878361118
 iv: 'c044059ae57b61821a9090fbdefc63c5'
 encrypted_flag: 'f60522a95bde87a9ff00dc2c3d99177019f625f3364188c1058183004506bf96541cf241dad1c0e92535564e537322d7'
 ```
-:::
 
 ##### b) Phân tích cách làm:
 - Từ script.py, có thể thấy rằng hàm `generate_public_int(g, a, p)` trả về: $$(g \oplus a) \mod p$$ Thay vì: $$g^a \mod p$$ Tương tự, hàm `generate_shared_secret(A, b, p)` trả về: $$s = (A \oplus b) \mod p$$ Thay vì: $$s = A^b \mod p$$
