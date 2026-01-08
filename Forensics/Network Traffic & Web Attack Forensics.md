@@ -1,4 +1,82 @@
-##
+## NETWORK TRAFFIC FORENSICS
+- Trong thế giới hiện đại, networks là một phần không thể thiếu trong cuộc sống thường ngày, cho phép ta giao tiếp, truy cập thông tin và thực hiện các hoạt động online khác nhau. Tuy nhiên, networks cũng là mục tiêu bị nhắm tới với các mục đích xấu để khai thác lỗ hổng.
+- Một số công cụ chính trong Network Forensics:
+    - **Wireshark, Network Miner**: Bắt và phân tích gói tin với giao diện đồ hoạ.
+    - **Tcpdump**: Phân tích gói tin với giao diện console.
+    - **p0f**: Để phát hiện hệ điều hạnh, console trên nền Linux.
+    - **netcat**: Debug kết nối, đóng vai trò cả client và server, console trên Windows và Linux.
+    - **Snort**: Opensource phát hiện xâm nhập.
+    - **Nmap, tcpxtract, ssldump, nslookup, maxmind,...**
+- Trong phần này, ta sẽ ôn lại những phần cơ bản của networks gồm địa chỉ IP, giao thức và cổng. Ta sẽ xem rằng làm thế nào chúng hoạt động cùng nhau để thực hiện việc giao tiếp giữa các thiết bị. Tiếp theo là phân tích forensics lưu lượng networks, ta sẽ phân tích việc thu thập lưu lượng cho mục đích xấu bằng cách xem xét sự bất thường trong các mẫu lưu lượng, nhận diện các sự cố gắng truy nhập trái phép và tìm ra source của bất kỳ attacks nào.
+
+### I. Basic Networking Refresher
+Nói một cách đơn giản, network là một nhóm các thiết bị kết nối nhau để giao tiếp và chia sẻ thông tin, files và tài nguyên. Các thiết bị này phải có một địa chỉ IP, một giao thức và một cổng để giao tiếp với nhau, việc hiểu rõ những cái này rất quan trọng vì đây là cơ sở để điều tra bất kỳ hoạt động độc hại nào trên network.
+
+#### 1. Địa chỉ IP
+Là địa chỉ độc nhất của một thiết bị trên network. Nó giúp nhận diện vị trí của thiết bị và giúp giao tiếp với các thiết bị khác dễ dàng hơn.
+
+#### 2. Giao thức
+Là một bộ quy tắc quản lý sự giao tiếp giữa các thiết bị trên một network (HTTP, SSH, FTP,...).
+> Ví dụ, khi truy cập một website, máy tính sẽ gửi một HTTP request đến web server và web server sẽ phản hồi lại HTTP response chứa webpage ta yêu cầu.
+
+#### 3. Ports (Cổng)
+- Một port là một con số dùng để nhận diện app cụ thể hay service trên một thiết bị. Khi một thiết bị nhận lưu lượng network, nó dùng port number để quyết định lưu lượng này dành cho app hay service nào.
+> Ví dụ, khi truy cập website bằng cách dùng HTTP, trình duyệt sẽ gửi request đến cổng 80 của web server.
+
+- Một số giao thức và các port phổ biến:
+![image](https://hackmd.io/_uploads/HJ2eD46Ebe.png)
+
+### II. Network Traffic Forensics
+Trong phần này, ta xem xét các tools và techniques được dùng để thu thập và phân tích lưu lượng mạng, xuất ra thông tin giá trị, ngăn chặn hành vi độc hại và điều tra các attacks trên mạng.
+
+#### 1. Thu thập Network Traffic
+- Điều tiên quyết để thực hiện forensics lưu lượng mạng là thu thập lưu lượng mạng. Điều này có thể đạt được bằng cách dùng network packet capture hay sniffing tool (Wireshark, `tcpdump`,...). Trong lab này ta sẽ dùng Wireshark là chính.
+- Các bước thu thập live network traffic:
+    - Mở Wireshark bằng `wireshark` trong Terminal trong Linux hoặc mở trong Start menu trên Windows.
+    - Chọn một giao diện mạng mà ta muốn thu thập lưu lượng, đa số là `eth0`.
+    - Click vào icon vây cá mập xanh dương ở góc trái trên để bắt đầu thu thập.
+    - Trong đa số các trường hợp, nên nhìn các packets bắt đầu xuất hiện trên Wireshark. Nếu không, có thể thử tạo một số lưu lượng bằng cách mở một website như Google.
+    ![image](https://hackmd.io/_uploads/rJSIa4TNZe.png)
+    - Để dừng việc thu thập, click nút stop ở góc trái trên màu đỏ.
+    - Để lưu lưu lượng, `File` $\rightarrow$ `Save as` và chọn tên và vị trí để lưu file lưu lượng.
+> Mặc định, file extension nên là `.pcapng`. Một extension khác phổ biến là `pcap`.
+
+#### 2. Phân tích Network Traffic
+- Bước tiếp theo trong forensics lưu lượng mạng là phân tích lưu lượng, nghĩa là kiểm tra để nhận diện các hoạt động độc hại, các nỗ lực truy cập trái phép và xuất các thông tin như:
+    - Source, địa chỉ IP đích và cổng.
+    - Giao thức.
+    - Sự truyền data/payload.
+    - Thời gian của hoạt động.
+- Trong khi có các features available trong Wireshark cho network forensics, có một số thông dụng được dùng để hiển thị cấp bậc giao thức, applying filters, hiển thị packet details và packet bytes, theo dõi TCP streams và xuất các objects.
+- Để bắt đầu phân tích mẫu lưu lượng mạng, download file ở [link](https://github.com/vonderchild/digital-forensics-lab/blob/main/Lab%2005/files/capture.pcapng) và mở nó bằng Wireshark.
+![image](https://hackmd.io/_uploads/B1FQ1r6NZl.png)
+
+##### a) Protocol Hierarchy
+Để có một cái nhìn tổng quan về các lưu lượng thu thập được, `Statistics` $\rightarrow$ `Protocol Hierarchy` để xem protocols nào đang được dùng trong lưu lượng và sự liên quan của các packets cho mỗi protocol. Điều này giúp thu hẹp việc phân tích và lọc cho lưu lượng độc hại.
+![image](https://hackmd.io/_uploads/SJmr1Sa4Zx.png)
+
+##### b) Filters
+- Ta có thể apply filters để tập trung vào lưu lượng tuỳ ý, điều này giúp dễ dàng hơn trong việc phân tích và hiển thị duy nhất packets có liên quan mà ta cần.
+- Ảnh sau giải thích cách lọc HTTP packets:
+![image](https://hackmd.io/_uploads/rJrRkrpE-e.png)
+- Tương tự, có thể lọc FTP packets:
+![image](https://hackmd.io/_uploads/Byz5xHT4Zl.png)
+- Tham khảo [DisplayFilters](https://wiki.wireshark.org/DisplayFilters) để xem bộ lọc khác mà Wireshark hỗ trợ .-.
+
+##### c) Packet Details và Packet Bytes
+Ô packet chi tiết hiển thị packet được chọn theo cách form chi tiết, trong khi ô packet bytes hiển thị dữ liệu của packet được chọn trong hexdump format.
+![image](https://hackmd.io/_uploads/B1FQ1r6NZl.png)
+
+##### d) Follow TCP Stream
+Follow TCP Stream feature trong Wireshark hiển thị toàn bộ cuộc hội thoại (conversation) cho một kết nối TCP cụ thể. Điều này giúp dễ dàng hơn để quan sát đầy đủ chi tiết của một kết nối và bất kỳ data được truyền trong kết nối này. Để dùng feature này, click chuột phải vào bất kỳ packet nào và chọn `Follow` $\rightarrow$ `TCP Stream`:
+![image](https://hackmd.io/_uploads/SkNqzrpE-e.png)
+
+##### e) Export Objects
+- Export Objects feature cho phép extract file từ lưu lượng mạng đã thu thập. Để truy cập feature này, chọn `File` $\rightarrow$ `Export Objects`.
+- Trong `HTTP` sub-menu, ta có thể hiển thị danh sách các files đã chuyển giao HTTP trong lúc thu thập. Sau khi chọn file(s) muốn extract, có thể lưu nó bằng cách click `Save`.
+![image](https://hackmd.io/_uploads/SyGtXSp4Zg.png)
+
+## WEB ATTACK FORENSICS
 - Web apps là toàn bộ của cuộc sống thường ngày của chúng ta và được sử dụng trong hầu hết các hoạt động, từ mua sắm online cho đến banking và social media. Tuy nhiên, việc sử dụng rộng rãi mở ra nguy cơ tấn công lớn cho các tác nhân xấu để exploit và chiếm quyền trong hệ thống.
 - Dưới đây là một số loại tấn công web apps phổ biến khác nhau và một số kỹ thuật nhận biết các loại tấn công này bằng cách phân tích web app logs và web app firewall logs, để tìm điểm tấn công, và tìm ra vấn đề gốc rễ bằng cách nhận diện lỗ hổng được khai thác.
 
