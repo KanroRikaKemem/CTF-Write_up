@@ -1,12 +1,12 @@
 ### I. ENCODING:
 #### 1. ASCII:
-##### ##### a) Mô tả đề bài:
+##### a) Mô tả đề bài:
 - ASCII là tiêu chuẩn mã hóa 7 bit cho phép biểu diễn văn bản bằng các số nguyên 0 - 127.
 - Sử dụng mảng số nguyên bên dưới, chuyển đổi các số thành ký tự ASCII tương ứng để thu được cờ.
 **[99, 114, 121, 112, 116, 111, 123, 65, 83, 67, 73, 73, 95, 112, 114, 49, 110, 116, 52, 98, 108, 51, 125]**
 - Trong Python, hàm `chr()` có thể được sử dụng để chuyển đổi số thứ tự ASCII thành ký tự (hàm `ord()` thực hiện ngược lại).
      
-##### ##### b) Phân tích cách giải:
+##### b) Phân tích cách giải:
 ![image](https://hackmd.io/_uploads/H1pBYqxfyx.png)
 - Khai báo biến **a** gồm các số thứ tự ASCII đã cho.
 - `join()` là một phương thức của kiểu dữ liệu chuỗi (`str`) trong Python, có chức năng nối các phần tử trong một iterable. `' '.join` có tác dụng nối các phần tử mà không sử dụng dấu cách (Nếu sử dụng `,` thì các phần tử được ngăn cách bằng dấu phẩy).
@@ -14,11 +14,11 @@
 - `chr(value)`: Với mỗi phần tử `value`, hàm `chr(value)` được gọi để chuyển giá trị số nguyên `value` thành ký tự Unicode tương ứng.
 - `print(result)`: In ra kết quả sau khi nối phần tử.
 
-##### ##### c) Kết quả:
+##### c) Kết quả:
 `crypto{ASCII_pr1nt4bl3}`
 
 #### 3. HEX:
-##### ##### a) Mô tả đề bài:
+##### a) Mô tả đề bài:
 - Khi mã hóa thứ gì đó, văn bản mã hóa thu được thường có các byte không thể in được ký tự ASCII. Nếu muốn chia sẻ dữ liệu được mã hóa của mình, thông thường phải mã hóa dữ liệu đó thành thứ gì đó thân thiện hơn với người dùng và di động hơn trên các hệ thống khác nhau.
 - Hệ thập lục phân có thể được sử dụng theo cách như vậy để biểu diễn các chuỗi ASCII. Đầu tiên, mỗi chữ cái được chuyển đổi thành số thứ tự theo bảng ASCII. Sau đó, các số thập phân được chuyển đổi thành cơ số 16, còn được gọi là hệ thập lục phân. Các số có thể được kết hợp với nhau thành một chuỗi hex dài.
 - Bên dưới là một lá cờ được mã hóa dưới dạng chuỗi hex. Giải mã lại thành byte để lấy cờ.
@@ -27,16 +27,16 @@
 ```
 - Trong Python, hàm `bytes.fromhex()` có thể được sử dụng để chuyển đổi hex thành byte. Phương thức cá thể `.hex()` có thể được gọi trên chuỗi byte để lấy biểu diễn hex.
      
-##### ##### b) Phân tích cách giải:
+##### b) Phân tích cách giải:
 ![image](https://hackmd.io/_uploads/Sy-QlixMyx.png)
 - Khai báo biến `string` là chuỗi đã cho.
 - Khai báo biến `result` với giá trị là chuỗi hex đã chuyển đổi thành byte bởi cú pháp `bytes.fromhex(string)`.
 
-##### ##### c) Kết quả:
+##### c) Kết quả:
 `crypto{You_will_be_working_with_hex_strings_a_lot}`
 
 #### 3. Base64:
-##### ##### a) Mô tả đề bài:
+##### a) Mô tả đề bài:
 - Một sơ đồ mã hóa phổ biến khác là Base64, cho phép biểu diễn dữ liệu nhị phân dưới dạng chuỗi ASCII bằng bảng chữ cái gồm 64 ký tự. Một ký tự của chuỗi Base64 mã hóa 6 chữ số nhị phân (bit) và do đó, 4 ký tự của Base64 mã hóa ba byte 8 bit.
 - Base64 được sử dụng phổ biến nhất trên mạng, vì vậy dữ liệu nhị phân như hình ảnh có thể dễ dàng được đưa vào tệp HTML hoặc CSS.
 - Lấy chuỗi hex bên dưới, giải mã thành byte và sau đó mã hóa thành Base64.
@@ -45,18 +45,18 @@
 ```
 - Trong Python, sau khi nhập module base64 bằng `import base64`, có thể sử dụng hàm `base64.b64encode()`. Hãy nhớ giải mã hex trước khi mô tả thử thách nêu rõ.
      
-##### ##### b) Phân tích cách giải:
+##### b) Phân tích cách giải:
 ![image](https://hackmd.io/_uploads/B1414sxG1e.png)
 - Khai báo biến `string` là chuỗi đã cho.
 - Khai báo biến `byte` với giá trị là chuỗi hex đã chuyển đổi thành byte bởi cú pháp `bytes.fromhex(string)`.
 - Khai báo thư viện base64 bằng cú pháp `import base64`.
 - Khai báo biến `result` với giá trị là chuỗi byte đã chuyển đổi thành base64 bởi cú pháp `base64.b64encode(byte)`.
     
-##### ##### c) Kết quả:
+##### c) Kết quả:
 `crypto/Base+64+Encoding+is+Web+Safe/`
 
 #### 4. Bytes and Big Intergers:
-##### ##### a) Mô tả đề bài:
+##### a) Mô tả đề bài:
 - Các hệ thống mật mã như RSA hoạt động trên các con số, nhưng các thông điệp được tạo thành từ các ký tự. Chúng ta nên chuyển thông điệp của mình thành số như thế nào để có thể áp dụng các phép toán?
 - Cách phổ biến nhất là lấy byte thứ tự của tin nhắn, chuyển đổi chúng thành hệ thập lục phân và ghép nối. Điều này có thể được hiểu là cơ số 16/thập lục phân và cũng được biểu thị bằng cơ số 10/thập phân.
 - Để minh họa:
@@ -85,7 +85,7 @@ cơ sở-10: 310400273487
 `crypto{3nc0d1n6_4ll_7h3_w4y_d0wn}`
 
 #### 5. Encoding Challenge:
-##### ##### a) Mô tả đề bài:
+##### a) Mô tả đề bài:
 - Bây giờ bạn đã hiểu rõ về nhiều loại mã hóa khác nhau mà bạn sẽ gặp phải, hãy xem xét việc tự động hóa nó.
 - Bạn có thể vượt qua tất cả 100 cấp độ để có được cờ không?
 - Tệp `13377.py` đính kèm bên dưới là mã nguồn của những gì đang chạy trên máy chủ. Tệp `pwntools_example.py` cung cấp sự khởi đầu của một giải pháp.
@@ -95,6 +95,7 @@ cơ sở-10: 310400273487
 ![image](https://hackmd.io/_uploads/r1cf28fG1x.png)
 - Khai báo các thư viện cần thiết.
 - Các thiết lập như chú thích trong hình.
+
 ![image](https://hackmd.io/_uploads/rJsryPGM1e.png)
 - Chạy vòng lặp giải mã 100 lần.
     
@@ -105,6 +106,7 @@ cơ sở-10: 310400273487
 #### 1. XOR Starter:
 ##### a) Mô tả đề bài:
 - XOR là toán tử bitwise trả về 0 nếu các bit giống nhau và 1 nếu ngược lại. Trong sách giáo khoa, toán tử XOR được ký hiệu là ⊕, nhưng trong hầu hết các thử thách và ngôn ngữ lập trình, bạn sẽ thấy dấu mũ `^` được sử dụng thay thế.
+
 ![image](https://hackmd.io/_uploads/rkiBGc7z1l.png)
 - Đối với các số nhị phân dài hơn, ta XOR từng bit: `0110 ^ 1010 = 1100`. Ta có thể XOR số nguyên bằng cách trước tiên chuyển đổi số nguyên từ thập phân sang nhị phân. Chúng ta có thể XOR chuỗi bằng cách trước tiên chuyển đổi từng ký tự thành số nguyên biểu thị ký tự Unicode.
 - Với string `label`, XOR mỗi ký tự có số nguyên `13`. Chuyển đổi các số nguyên này trở lại thành chuỗi và gửi cờ dưới dạng `crypto{new_string}`.
@@ -188,10 +190,11 @@ Tôi đã mã hóa cờ bằng khóa bí mật của mình, bạn sẽ không ba
 - Khai báo `string` có giá trị là `crypto{` và in ra màn hình biến `string`.
 - Ta được output: `b'myXORke+y_Q\x0bHOMe$~seG8bGURN\x04DFWg)a|\x1dTM!an\x7f'`
 - Thấy rằng phần `myXORke+y` có ý nghĩa, khai báo biến `string` với giá trị là `myXORkey`.
+
 ![image](https://hackmd.io/_uploads/Hk-YDgBz1x.png)
 - XOR `string` với `he` lại lần nữa, tìm được flag.
 
-##### ##### c) Kết quả:
+##### c) Kết quả:
 `crypto{1f_y0u_Kn0w_En0uGH_y0u_Kn0w_1t_4ll}`
 
 #### 5. Lemur XOR: 
@@ -205,6 +208,7 @@ Tôi đã mã hóa cờ bằng khóa bí mật của mình, bạn sẽ không ba
     
 ##### c) Kết quả:
 `crypto{X0Rly_n0t!}`
+
 ![tmpe30u6f2t](https://hackmd.io/_uploads/rkfJFmIGye.png)
 
 ### III. MATHEMATICS:
@@ -222,6 +226,7 @@ Tôi đã mã hóa cờ bằng khóa bí mật của mình, bạn sẽ không ba
 
 ##### b) Phân tích cách làm:
 **Thuật toán Euclid**: UCLN của của hai số nguyên không thay đổi khi thay số lớn hơn bằng hiệu của nó với số nhỏ hơn. Quá trình thay thế này được lặp đi lặp lại cho tới khi hai số bằng nhau, khi đó UCLN chính là một trong hai số đó.
+
 ![image](https://hackmd.io/_uploads/ryyt1rLGkg.png)
 - Khai báo `a` và `b` là hai số nguyên nhập từ bàn phím.
 - Gọi hàm, thực hiện các điều kiện và vòng lặp.
@@ -372,6 +377,7 @@ Tìm kiếm miền phụ subdomain trong `cryptohack.org` mà sử dụng khoá 
 ##### b) Phân tích cách làm:
 - Sử dụng crt.sh để tìm subdomain.
 - Search `cryptohack.org`.
+
 ![image](https://hackmd.io/_uploads/BkoPq24mJe.png)
 - Tìm từ khoá `transparency` bằng `Ctrl` + `F` và vào phần link ở cột `Matching Identities`, ta tìm được flag.
     
