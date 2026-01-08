@@ -33,6 +33,7 @@ Tên của cuộc tấn công đó là Biclique.
 ##### a) Mô tả đề bài:
 - Mô tả tổng quan về AES: AES - 128 sử dụng một khoá 128 bit để mã hoá một khối văn bản (state) 4x4 byte. Quá trình mã hoá gồm 10 vòng, bao gồm các bước biến đổi ngược để có thể đảo ngược được
 - Các bước mã hoá trong AES:
+  
     ![image](https://hackmd.io/_uploads/Sk6gJrZT1e.png)
     - **KeyExpansion:** Từ khoá 128 bit ban đầu, tạo ra 11 khoá vòng (round keys) 128 bit, mỗi vòng sử dụng một khoas vòng khác nhau.
     - **AddRoundKey:** XOR khoá vòng đầu tiên vào với trạng thái (state).
@@ -77,6 +78,7 @@ print(res)
 #### 4. Round Keys:
 ##### a) Mô tả đề bài:
 - Giới thiệu về KeyExpansion và AddRoundKey:
+
     ![image](https://hackmd.io/_uploads/H1gq3eBbayl.png)
     - Trong thuật toán AES, khoá ban đầu 16 byte sẽ được mở rộng để tạo ra 11 khoá vòng (round keys), mỗi khoá vòng là một ma trận 4x4.
     - Trong bước **AddRoundKey**, mỗi khoá vòng sẽ XOR trạng thái (state) với khoá vòng hiện tại và đây là cách mà khoá được trộn vào trạng thái trong AES.
@@ -144,6 +146,7 @@ print(add_round_key(state, round_key))
     - Lấy mỗi byte trong ma trận trạng thái.
     - Thực hiện thay thế byte đó bằng byte tương ứng từ S - box.
     - Sử dụng S - box ngược để thực hiện thay thế các giá trị byte theo phương pháp đã được chỉ định.
+
     ![image](https://hackmd.io/_uploads/SkWJbBbpye.png)
 - S - box trong AES được thiết kế để có độ phi tuyến cao và kháng lại việc ướng lượng mỗi quan hệ tuyến tính giữa ciphertext, khoá và plaintext. Quá trình này là một phần của việc làm tăng độ bảo mật của thuật toán.
 - Cuối cùng, sau khi thực hiện SubBytes, ta cần chuyển đổi kết quả thành byte để tìm flag.
@@ -222,8 +225,10 @@ print(res)
 ##### a) Mô tả đề bài:
 - Đề bài yêu cầu triển khai hai bước trong thuật toán AES để giải mã ma trận `state` và tìm flag:
     - **ShiftRows:** Là một bước đơn giản trong AES, giữ nguyên hàng đầu tiên của ma trận, dịch các hàng còn lại theo một số cột nhất định. Hàng thứ hai dịch một cột, hàng thứ ba dịch hau cột, hàng thứ tư dịch ba cột.
+
     ![image](https://hackmd.io/_uploads/BkUb-H-6Je.png)
     - **MixColumns:** Một phép toán phức tạp hơn, thực hiện phép nhân ma trận trong trường Galois của Rijndael, nơi mỗi byte trong một cột sẽ ảnh hưởng đến tất cả các byte trong cột đó, tạo ra sự khuếch tán.
+
     ![image](https://hackmd.io/_uploads/S14Mbr-ayx.png)
 - Nhiệm vụ của ta là triển khai các bước:
     - `inv_shift_rows`: Đảo ngược phép dịch của ShiftRows.
@@ -291,6 +296,7 @@ for i in range(4):
 #### 7. Bringing It All Together:
 ##### a) Mô tả đề bài:
 - Đề yêu cầu ta hoàn thiện hàm giải mã trong source triển khai AES - 128 có sẵn bằng cách thực hiện các bước đảo ngược quá trình mã hoá AES. Các bước này bao gồm:
+
     ![image](https://hackmd.io/_uploads/rJpXWBZT1e.png)
     - **Key Expansion:** Tạo ra các khoá vòng để sử dụng trong suốt quá trình mã hoa và giải mã.
     - **SubBytes:** Thực hiện phép thay thế các byte trong state với các giá trị tương ứng từ bảng S - box.
@@ -519,9 +525,11 @@ def encrypt_flag():
 ```
 - Ta chú ý thấy dòng `@chal.route('/block_cipher_starter/encrypt_flag/')` trong source code trên. Thêm phần `/encrypt_flag/` vào đường link (link mới là https://aes.cryptohack.org/block_cipher_starter/encrypt_flag/), ta tìm được ciphertext là `a3c22d1bfcccd351b995f478a962da376a2cb1620cfda8c02aa6befcda831698`.
 - Đưa ciphertext vào phần **DECRYPT (CIPHERTEXT)**:
+
 ![image](https://hackmd.io/_uploads/By7zZfCKyx.png)
 Ta được phần plaintext là `63727970746f7b626c30636b5f633170683372355f3472335f663435375f217d`. 
 - Vì plaintext ở dạng hex nên ta tiếp tục đưa nó vào phần **HEX ENCODER/DECODER**:
+
 ![image](https://hackmd.io/_uploads/HyX3bf0Y1g.png)
 
 ##### c) Kết quả: 
@@ -1279,6 +1287,7 @@ flag = Image.open('flag.png')
 flag.show()
 ```
 - Kết quả:
+
     ![tmplqtgw4cu](https://hackmd.io/_uploads/HJbIVzWCkl.png)
 
 ##### c) Kết quả:
@@ -1457,6 +1466,7 @@ listener.start_server(port=13399)
     - $S_i$: State hiện tại, bắt đầu bằng $IV$ ($16$ byte)
     - $MSB_1$: Lấy một byte đầu sau khi mã hoá AES.
     - $leftshift(S_i)$: Bỏ byte đầu của $S_i$, dịch trái một byte.
+
 ![image](https://hackmd.io/_uploads/H17RMamR1g.png)
 - Chức năng của server trong challenge:
     - `authenticate`: So sánh `your_password.encode()` với `self.password`
@@ -1537,7 +1547,6 @@ def encrypt():
 - Gửi requests lên server để lấy danh sách ciphertext tương ứng với `TEXT` (loại bỏ ciphertext trùng lặp).
 - Với một phần flag đã biết là `crypto{`, đặt nó làm $P_i$, vì challenge này hoạt động với CTR và `KEY` yếu nên: $$temp = P_i \oplus P_{i - 1} = C_i \oplus C_{i - 1}$$ Suy ra: $$P_{i - 1} = temp \oplus P_i$$
 - Lấy tổ hợp chập hai từ danh sách ciphertext thu được và XOR như trên, ta được một danh sách plaintext vụn nhặt:
-:::spoiler Plaintext
 ```py
 b'nr\x7fo\x1d\x18d'
 b'mioo\x1d\x18`'
@@ -1771,7 +1780,6 @@ b'supohod'
 b'puth-.,'
 b'`r}w1.3'
 ```
-:::
 - Source code:
 ```py
 import requests
@@ -1834,7 +1842,6 @@ flag = b"Love, probably? They don't know "
 flag = b"Dolly will think that I'm leaving "
 flag = b"No, I'll go in to Dolly and tell her "
 ```
-::: spoiler Source code
 ```py
 import requests
 from pwn import xor
@@ -1862,7 +1869,6 @@ for c in stream:
     res = xor(temp, flag)
     print(res)
 ```
-:::
 - Tới đây, ta đã tìm ra `crypto{k3y57r34m_r3u53_15_f474l}`
 
 ##### c) Kết quả:
@@ -1973,7 +1979,6 @@ flag_enc = 'b6327e9a2253034096344ad5694a2040b114753e24ea9c1af17c10263281fb0fe622
         - XOR keystream với plaintext để tạo ciphertext.
     - Nhưng trong challenge: Thực hiện $20$ vòng ChaCha trực tiếp lên `self.state` và sử dụng chính nó là keystream $\rightarrow$ Vô hiệu hoá phần lớn tính an toàn của ChaCha20.
 - Từ source code challenge, các hàm được làm một chiều nên chỉ cần đảo ngược các hàm lại:
-::: spoiler reverse_inner_block()
 ```py
 def reverse_inner_block(self, state):
     self.reverse_quarter_round(state, 3, 4, 9, 14)
@@ -1985,8 +1990,6 @@ def reverse_inner_block(self, state):
 	self.reverse_quarter_round(state, 1, 5, 9, 13)
 	self.reverse_quarter_round(state, 0, 4, 8, 12)
 ```
-:::
-::: spoiler reverse_quarter_round()
 ```py
 def reverse_quarter_round(self,x, a, b, c, d):
 	x[b] = rotate(x[b], 32-7)
@@ -2005,9 +2008,7 @@ def reverse_quarter_round(self,x, a, b, c, d):
 	x[d] ^= x[a]
 	x[a] = word(x[a] - x[b])
 ```
-:::
 - Phân tích hàm `_setup_state()`:
-::: spoiler _setup_state()
 ```py
 def _setup_state(self, key, iv):
 	self._state = [0x61707865, 0x3320646e, 0x79622d32, 0x6b206574]
@@ -2015,14 +2016,12 @@ def _setup_state(self, key, iv):
 	self._state.append(self._counter)
 	self._state.extend(bytes_to_words(iv)
 ```
-:::
 State gồm:
     - Chuỗi biểu diễn đầu tiên là $4$ giá trị cố định.
     - Tiếp theo là $32$ bytes của `key`.
     - Cuối cùng là $12$ bytes của `iv`.
 Nếu tìm được state ban đầu thì sẽ tìm được `key`.
 - Phân tích hàm `encrypt()`:
-::: spoiler encrypt()
 ```py
 def encrypt(self, m, key, iv):
 	c = b''
@@ -2037,14 +2036,12 @@ def encrypt(self, m, key, iv):
 
 	return c
 ```
-:::
 Xét $i$ lần lặp, mỗi lần sẽ:
     - `_setup_state()`: state chỉ thay đổi mỗi giá trị `counter`, giá trị `key` và `iv` không thay đổi.
     - `inner_block()` mười lần.
     - Kết quả sẽ `word_to_bytes` state và XOR với $64$ bytes của `msg`.
     - `counter` tăng một đơn vị.
 Ta sẽ tìm `key` bằng cách đảo ngược lại hàm `encrypt()` (thao tác với $64$ bytes đầu tiên vì chỉ có `counter` thay đổi).
-::: spoiler find_key()
 ```py
 def find_key(self, msg, msg_enc):
 	self._state = bytes_to_words(xor(msg, msg_enc)[:64])
@@ -2053,7 +2050,6 @@ def find_key(self, msg, msg_enc):
 	key = words_to_bytes(self._state[4:])[:32]
 	return key
 ```
-:::
 - Source code:
 ```py
 def bytes_to_words(b):
