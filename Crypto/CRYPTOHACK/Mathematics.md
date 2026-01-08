@@ -77,7 +77,7 @@ p = 3053185186199433325267593511148795069441433276390908351413376986135096089507
 
 ##### b) Phân tích cách làm:
 - Cơ sở lý thuyết:
-    - **Legendre Symbol:** $$
+    - **Legendre Symbol:**
     ```math
     \left( \frac{a}{p} \right) =
     \begin{cases}
