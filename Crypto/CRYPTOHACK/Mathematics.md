@@ -79,14 +79,13 @@ p = 3053185186199433325267593511148795069441433276390908351413376986135096089507
 - Cơ sở lý thuyết:
     - **Legendre Symbol:**
 
-$$
-\left( \frac{a}{p} \right) =
-\begin{cases}
-0 & \text{nếu } a \equiv 0 \pmod{p} \\
-1 & \text{nếu } a \text{ là bình phương modulo } p \\
--1 & \text{nếu } a \text{ không là bình phương modulo } p
-\end{cases}
-$$
+    $\frac{a}{p} =$
+    <table>
+    <tr><td>0</td><td>nếu a ≡ 0 (mod p)</td></tr>
+    <tr><td>1</td><td>nếu a là bình phương modulo p</td></tr>
+    <tr><td>-1</td><td>nếu a không là bình phương modulo p</td></tr>
+    </table>
+
     Với $\frac{a}{p} \equiv a^{(p - 1)/2} \mod p$
     - **Tonelli - Shanks:** Áp dụng khi $p \equiv 1 \mod 4$ vì nếu $p \equiv 3 \mod 4$ thì ta sử dụng $x \equiv a^{(p + 1)/4} \mod p$
 - Xét $p \equiv 1 \mod 4$ hay $p - 1 = k.2^n$ (với $k$ lẻ), tìm $k$ và $n$ tương ứng.
@@ -158,36 +157,16 @@ print(square_root(a, p))
 
 #### 4. Chinese Remainder Theorem:
 ##### a) Mô tả đề bài:
-- **Định lý phần dư Trung Hoa (Chinese Remainder Theorem):**
-    - Đảm bảo rằng một hệ phương trình đồng dư tuyến tính có nghiệm duy nhất modulo **tích các modulo**, nếu **các modulo** là **nguyên tố cùng nhau từng đôi một**.
-    - Nghĩa là: Cho các số nguyên $a_1$, $a_2$,..., $a_k$ và các modulo $n_1$, $n_2$,..., $n_k$:
-Nếu: $$GCD(n_i, n_j) = 1, \forall i \neq j$$ Và: $$\begin{aligned}
-x &\equiv a_1 \pmod{n_1} \\
-x &\equiv a_2 \pmod{n_2} \\
-&\vdots \\
-x &\equiv a_k \pmod{n_k}
-\end{aligned}$$ Thì tồn tại nghiệm $x$ duy nhất thoả: $$x \equiv a \mod N$$ Với $N = n_1.n_2...n_k$
+- **Định lý phần dư Trung Hoa (Chinese Remainder Theorem):** Đảm bảo rằng một hệ phương trình đồng dư tuyến tính có nghiệm duy nhất modulo **tích các modulo**, nếu **các modulo** là **nguyên tố cùng nhau từng đôi một**.
+
+<img width="731" height="507" alt="image" src="https://github.com/user-attachments/assets/4f82da11-601e-4b2c-a94b-8c70e49bab3b" />
+
 - Challange:
-Cho hệ phương trình đồng dư: $$\begin{aligned}
-x &\equiv 2 \pmod{5} \\
-x &\equiv 3 \pmod{11} \\
-x &\equiv 5 \pmod{17}
-\end{aligned}$$ Tìm $a$ sao cho $x \equiv a \mod 935$ (với $935 = 5.11.17$).
+<img width="833" height="202" alt="image" src="https://github.com/user-attachments/assets/2242d73d-df93-48af-bfac-d12dacf4a588" />
+
 ##### b) Phân tích cách làm:
-- Xét hệ: $$\begin{aligned}
-x &\equiv a_0 \pmod{n_0} \\
-x &\equiv a_1 \pmod{n_1} \\
-x &\equiv a_2 \pmod{n_2}
-\end{aligned}$$ Theo định lý CRT, có thể kết hợp các phương trình này lại thành: $$x \equiv a \mod N$$ Với $N = n_0.n_1.n_2$
-Ta có: $$\begin{align}
-    N_0 = \frac{N}{n_0} \\
-    N_1 = \frac{N}{n_1} \\
-    N_2 = \frac{N}{n_2}
-  \end{align}$$ Từ các dòng trên: $$\begin{align}
-    u_0 = N_0^{-1} \mod n_0 \\
-    u_1 = N_1^{-1} \mod n_1 \\
-    u_2 = N_2^{-1} \mod n_2
-  \end{align}$$ Suy ra: $$x = (c_0.u_0.N_0 + c_1.u_1.N_1 + c_2.u_2.N_2) \mod N$$
+<img width="842" height="760" alt="image" src="https://github.com/user-attachments/assets/dd995f0b-7b89-44ad-b238-5b9fb3c285b6" />
+
 - Thế số vào, ta có source code:
 ```py
 N = 935
@@ -345,10 +324,12 @@ ct = 113031747618944311467356975694891347472349751441621721624016745672730348313
 ```
 
 ##### b) Phân tích cách làm:
-- Có thể thấy rằng $e = 16$ là số mũ nhỏ, nên ta tấn công bằng cách: $$c = m^e$$ Hay: $$m = \sqrt[16]{c}$$ Tương đương: $$
-\sqrt[16]{c} = \sqrt{\sqrt{\sqrt{\sqrt{c}}}}
-$$
-- Osint code mạng: ![image](https://hackmd.io/_uploads/B1FeN5l-gl.png)
+<img width="784" height="318" alt="image" src="https://github.com/user-attachments/assets/9b5796ac-0230-4b3b-bc13-24b706d8fc89" />
+
+- Osint code mạng:
+
+<img width="1199" height="725" alt="image" src="https://github.com/user-attachments/assets/83a54ce8-8275-4ab7-8ed9-815496507d11" />
+
 ```py
 from number import *
 from Crypto.Util.number import long_to_bytes
@@ -379,7 +360,8 @@ for m in r:
 ```
 Tuy nhiên code trên không chạy được vì sai.
 - Kết quả:
-![image](https://hackmd.io/_uploads/H1NBVqxbgx.png)
+
+<img width="805" height="84" alt="image" src="https://github.com/user-attachments/assets/97bb83b9-6e2c-4099-9de1-54a50c4e185d" />
 
 ##### c) Kết quả:
 `crypto{m0dul4r_squ4r3_r00t}`
