@@ -26,20 +26,8 @@
 ### II. Document Analysis and SteganographyFile Forensics (File Formats):
 [Link Write - up](https://hackmd.io/@bMGaKJbHSWqauGaKAUyYhA/BJOv97VX-g)
 
-### III. Web Attack Forensics:
+### III. Network Traffic & Web Attack Forensics:
 [Link Write - up](https://hackmd.io/@bMGaKJbHSWqauGaKAUyYhA/rktTQB5Vbe)
-
-### III. Network Forensics:
-#### 1. Tổng quan:
-Công việc chính của nhóm nay là thu thập và phân tích các gói tin được truyền quan các thiết bị đầu cuối, từ đó phát hiện, cảnh báo các dấu hiệu bất thường trong hệ thống mạng.
-
-#### 2. Công cụ chính:
-- **Wireshark, Network Miner**: Bắt và phân tích gói tin với giao diện đồ hoạ.
-- **Tcpdump**: Phân tích gói tin với giao diện console.
-- **p0f**: Để phát hiện hệ điều hạnh, console trên nền Linux.
-- **netcat**: Debug kết nối, đóng vai trò cả client và server, console trên Windows và Linux.
-- **Snort**: Opensource phát hiện xâm nhập.
-- **Nmap, tcpxtract, ssldump, nslookup, maxmind,...**
 
 ### IV. Memory Forensics:
 ### V. Disk Forensics:
