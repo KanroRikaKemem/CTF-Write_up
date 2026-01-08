@@ -24,6 +24,7 @@ Là một bộ quy tắc quản lý sự giao tiếp giữa các thiết bị tr
 > Ví dụ, khi truy cập website bằng cách dùng HTTP, trình duyệt sẽ gửi request đến cổng 80 của web server.
 
 - Một số giao thức và các port phổ biến:
+
 ![image](https://hackmd.io/_uploads/HJ2eD46Ebe.png)
 
 ### II. Network Traffic Forensics
