@@ -417,7 +417,7 @@ IP - - [time] "REQUEST" STATUS SIZE "REFERER" "USER-AGENT"
 - Attacker thường gửi rất nhiều requests và requests sẽ độc hại hoặc bất thường nên ta sẽ đếm số request theo IP:
 ![image](https://hackmd.io/_uploads/rkV2myhVZe.png)
 Với `awk '{print $1}'` để lấy IP, `uniq -c` để đếm và `sort -nr` để đẩy IP có số request nhiều nhất lên đầu. Kết quả là ta được output là IP `192.168.0.106` với số lần gửi request là `38`.
-- Để kiểm tra IP trên có request độc hại không: `grep 192.168.1.100 access.log | less` (`grep` để lọc log và `less` để xem nội dung từng trang):
+- Để kiểm tra IP trên có request độc hại không: `grep 192.168.1.106 access.log | less` (`grep` để lọc log và `less` để xem nội dung từng trang):
 ![image](https://hackmd.io/_uploads/HyIMWJnN-g.png)
 Từ output trên, ta thấy rất nhiều `../` và `/etc/passwd` nên đây có thể là tấn công LFI.
 
@@ -497,7 +497,7 @@ Và quan trọng nhất là ta đã thấy lời nhắn mà attackers để lạ
     - Lỗi xác thực dữ liệu đầu vào có thể dẫn đến các lỗ hổng nghiêm trọng như LFI.
     - Các tệp văn bản đơn giản cũng có thể chứa thông tin nhạy cảm và cần được bảo vệ.
     - Các tool như sqlmap làm tăng tốc độ và tác động của một cuộc tấn công.
-    - Web server log là bằng chứng quan trọng để tái tạo hành vi của attackẻ và xác định sự xâm nhập.
+    - Web server log là bằng chứng quan trọng để tái tạo hành vi của attacker và xác định sự xâm nhập.
 
 #### 10. Based on this attack, what indicators of compromise can be used to detect future attacks?
 - Địa chỉ IP của attacker.
