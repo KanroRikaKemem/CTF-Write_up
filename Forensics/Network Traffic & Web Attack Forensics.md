@@ -1204,3 +1204,107 @@ Apache-Error: [file "apache2_util.c"] [line 271] [level 3] [client 172.17.0.1] M
     - `/old`
     - `/.git/`
     - `/.env`
+
+## IV. Triển khai HTTP và capture lại quá trình GET/POST bằng Wireshark:
+### 1. GET:
+Khi nhập `google.com` vào trình duyệt, trình duyệt "viết một lá thư" như sau để gửi đi:
+```
+GET /index.html HTTP/1.1
+Host: google.com
+
+```
+- `GET /index.html HTTP/1.1`: Hành động (Lấy dữ liệu).
+- `Host`: Địa chỉ (server).
+- Một dòng trống: Báo hiệu để server nó đã viết xong.
+``` py
+import socket
+
+host = "httpbin.org"
+port = 80
+
+client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)     # AF_INET là dùng IPv4, SOCK_STREAM là dùng giao thức TCP
+client.connect((host, port))
+
+request = "GET /get HTTP/1.1\r\n"
+request += f"Host: {host}\r\n"
+request += "Connection: close\r\n"     # Đóng kết nối khi gửi xong
+request += "\r\n"     # Dòng trống
+
+client.send(request.encode())
+response = client.recv(4096)
+print(response.decode())
+client.close()
+```
+- Trước khi chạy file `.py` trên, lọc `http` trên Wireshark thì chưa có gì:
+
+![image](https://hackmd.io/_uploads/Hy962vsSZx.png)
+- Sau khi chạy file, gói tin `GET /get HTTP/1.1` chính là gói tin ta gửi đi, và server phản hồi lại với `200 OK` nghĩa là đã thành công:
+
+![image](https://hackmd.io/_uploads/SklmaDirWe.png)
+- Xem TCP Stream của gói tin trên (đỏ là request, xanh là response):
+
+![image](https://hackmd.io/_uploads/Bke26Djr-e.png)
+- Output trong `.py`:
+```
+HTTP/1.1 200 OK
+Date: Mon, 19 Jan 2026 08:36:05 GMT
+Content-Type: application/json
+Content-Length: 199
+Connection: close
+Server: gunicorn/19.9.0
+Access-Control-Allow-Origin: *
+Access-Control-Allow-Credentials: true
+
+{
+  "args": {},
+  "headers": {
+    "Host": "httpbin.org",
+    "X-Amzn-Trace-Id": "Root=1-696decf4-34a29ec356b84fc30c743747"
+  },
+  "origin": "123.20.146.206",
+  "url": "http://httpbin.org/get"
+}
+```
+
+### 2. POST:
+- Tương tự như trên:
+``` py
+import socket
+
+host = "httpbin.org"
+port = 80
+
+client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+client.connect((host, port))
+
+body = "user=admin&pass=123"
+request = "POST /post HTTP/1.1\r\n"
+request += "Host: httpbin.org\r\n"
+request += "Content-Type: application/x-www-form-urlencoded\r\n"
+request += f"Content-Length: {len(body)}\r\n"     # Với POST phải cho server biết nội dung gửi dài bao nhiêu ký tự
+request += "\r\n"
+request += body
+
+client.send(request.encode())
+response = client.recv(4096)
+print(response.decode())
+
+client.close()
+```
+- Output `.py`:
+```
+HTTP/1.1 200 OK
+Date: Mon, 19 Jan 2026 08:45:11 GMT
+Content-Type: application/json
+Content-Length: 393
+Connection: keep-alive
+Server: gunicorn/19.9.0
+Access-Control-Allow-Origin: *
+Access-Control-Allow-Credentials: true
+```
+- Trong Wireshark:
+
+![image](https://hackmd.io/_uploads/B1OOkuiSWg.png)
+- TCP Stream của gói tin `POST /post HTTP/1.1`:
+
+![image](https://hackmd.io/_uploads/BJeCJdsSbg.png)
